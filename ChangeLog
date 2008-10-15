@@ -1,3 +1,12 @@
+2008-10-14
+
+       * Make incr/decr command stricter/cleaner.  Value in memcached
+	 must be a well-formed number (doesn't fall back to assuming zero).
+	 Likewise with the provided <delta> argument.  (bradfitz)
+
+       * Rearrange some code, add some util functions, add some tests.
+	 Creates globals.c, internal_tests.c, util.c.  (bradfitz)
+
 2008-09-06
 
        * Display error status on listen failures (Dormando)
