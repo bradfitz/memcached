@@ -1517,7 +1517,7 @@ char *do_add_delta(conn *c, item *it, const bool incr, const int64_t delta, char
 
     ptr = ITEM_data(it);
 
-    if (!safe_strtoll(ptr, &value)) {
+    if (!safe_strtoull(ptr, &value)) {
         return "CLIENT_ERROR cannot increment or decrement non-numeric value";
     }
 
