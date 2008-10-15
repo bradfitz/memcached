@@ -17,7 +17,7 @@
 #define UDP_MAX_PAYLOAD_SIZE 1400
 #define UDP_HEADER_SIZE 8
 #define MAX_SENDBUF_SIZE (256 * 1024 * 1024)
-/* I'm told the max legnth of a 64-bit num converted to string is 20 bytes.
+/* I'm told the max length of a 64-bit num converted to string is 20 bytes.
  * Plus a few for spaces, \r\n, \0 */
 #define SUFFIX_SIZE 24
 

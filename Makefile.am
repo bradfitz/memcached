@@ -1,12 +1,19 @@
-bin_PROGRAMS = memcached memcached-debug
+bin_PROGRAMS = memcached memcached-debug internal_tests
 
-memcached_SOURCES = memcached.c slabs.c slabs.h items.c items.h assoc.c assoc.h memcached.h thread.c stats.c stats.h memcached_dtrace.h
+common_SOURCES = memcached.h slabs.c slabs.h items.c items.h \
+    assoc.c assoc.h stats.c stats.h \
+    util.c util.h \
+    memcached_dtrace.h thread.c globals.c
+
+memcached_SOURCES = memcached.c $(common_SOURCES)
 memcached_debug_SOURCES = $(memcached_SOURCES)
 memcached_CPPFLAGS = -DNDEBUG
 memcached_LDADD = @DTRACE_OBJ@ @DAEMON_OBJ@ 
 memcached_debug_LDADD = @DTRACE_DEBUG_OBJ@ @DAEMON_OBJ@
 memcached_DEPENDENCIES = @DTRACE_OBJ@ @DAEMON_OBJ@
 memcached_debug_DEPENDENCIES = @DTRACE_DEBUG_OBJ@ @DAEMON_OBJ@
+
+internal_tests_SOURCES = internal_tests.c $(common_SOURCES)
 
 memcached_dtrace.h:
 	${DTRACE} -h -s memcached_dtrace.d 
@@ -24,8 +31,8 @@ SUBDIRS = doc
 DIST_DIRS = scripts
 EXTRA_DIST = doc scripts TODO t memcached.spec daemon.c memcached_dtrace.d
 
-test:	memcached-debug
-	prove $(srcdir)/t
+test:	memcached-debug internal_tests
+	./internal_tests && prove $(srcdir)/t
 
 dist-hook:
 	rm -rf $(distdir)/doc/.svn/

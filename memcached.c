@@ -12,7 +12,7 @@
  *  Authors:
  *      Anatoly Vorobey <mellon@pobox.com>
  *      Brad Fitzpatrick <brad@danga.com>
-std *
+ *
  *  $Id$
  */
 #include "memcached.h"
@@ -96,9 +96,6 @@ static void set_current_time(void);  /* update the global variable holding
 
 static void conn_free(conn *c);
 
-/** exported globals **/
-struct stats stats;
-struct settings settings;
 
 /** file scope variables **/
 static item **todelete = NULL;
@@ -2538,15 +2535,6 @@ static int server_socket_unix(const char *path, int access_mask) {
     return 0;
 }
 
-/*
- * We keep the current time of day in a global variable that's updated by a
- * timer event. This saves us a bunch of time() system calls (we really only
- * need to get the time once a second, whereas there can be tens of thousands
- * of requests a second) and allows us to use server-start-relative timestamps
- * rather than absolute UNIX timestamps, a space savings on systems where
- * sizeof(time_t) > sizeof(unsigned int).
- */
-volatile rel_time_t current_time;
 static struct event clockevent;
 
 /* time-sensitive callers can call it by hand with this, outside the normal ever-1-second timer */
